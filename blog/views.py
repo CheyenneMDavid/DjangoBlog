@@ -3,6 +3,7 @@ from django.views import generic, View
 from django.http import HttpResponseRedirect
 from .models import Post
 from .forms import CommentForm
+from django.contrib import messages
 
 
 class PostList(generic.ListView):
@@ -49,6 +50,12 @@ class PostDetail(View):
             comment = comment_form.save(commit=False)
             comment.post = post
             comment.save()
+
+            # memory aid: https://docs.djangoproject.com/en/3.2/ref/contrib/messages/#using-messages-in-views-and-templates
+            messages.success(
+                request, "Your comment has been posted successfully!"
+            )
+
         else:
             comment_form = CommentForm()
 
